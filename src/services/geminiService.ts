@@ -9,7 +9,7 @@ interface GeminiJobListing {
 }
 
 const GEMINI_API_KEY = 'AIzaSyCtoqYTZTWJpZ20yOWTdVhwHeqfanq9Cds';
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 export const generateJobListings = async (prompt: string): Promise<GeminiJobListing[]> => {
   try {
@@ -21,19 +21,19 @@ export const generateJobListings = async (prompt: string): Promise<GeminiJobList
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `Generate 5 realistic job listings based on this request: "${prompt}". 
-            Return ONLY a valid JSON array with this exact structure:
+            text: `Search the internet and generate 5 realistic job listings based on this request: "${prompt}". 
+            Find actual current job opportunities and return ONLY a valid JSON array with this exact structure:
             [
               {
                 "title": "Job Title",
                 "company": "Company Name",
                 "location": "Location",
-                "salary": "Salary Range",
+                "salary": "Salary Range or 'Not specified'",
                 "url": "https://example.com/job",
-                "notes": "Brief description"
+                "notes": "Brief description of the role"
               }
             ]
-            Make sure URLs are realistic but can be placeholder domains like example.com/jobs/[id].`
+            Make the URLs realistic job board links. Include current market salary ranges where possible.`
           }]
         }]
       })
