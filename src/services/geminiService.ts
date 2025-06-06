@@ -21,21 +21,40 @@ export const generateJobListings = async (prompt: string): Promise<GeminiJobList
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `Search the internet and generate 5 realistic job listings based on this request: "${prompt}". 
-            Find actual current job opportunities and return ONLY a valid JSON array with this exact structure:
+            text: `Search the internet for current job openings and generate 5 realistic job listings based on this request: "${prompt}". 
+            Use Google Search to find actual job postings from popular job boards like LinkedIn, Indeed, Glassdoor, AngelList, and company career pages.
+            
+            Return ONLY a valid JSON array with this exact structure:
             [
               {
                 "title": "Job Title",
-                "company": "Company Name",
+                "company": "Company Name", 
                 "location": "Location",
                 "salary": "Salary Range or 'Not specified'",
-                "url": "https://example.com/job",
-                "notes": "Brief description of the role"
+                "url": "https://actual-job-board-url.com/job-posting",
+                "notes": "Brief description of the role and requirements"
               }
             ]
-            Make the URLs realistic job board links. Include current market salary ranges where possible.`
+            
+            Make sure to:
+            - Use real company names and actual job titles
+            - Include accurate salary ranges based on current market data
+            - Provide actual URLs to job postings when possible (LinkedIn, Indeed, company sites)
+            - Include relevant location information (Remote, City/State, Hybrid)
+            - Add brief but informative notes about each role`
           }]
-        }]
+        }],
+        tools: [{
+          googleSearchRetrieval: {
+            disableAttribution: false
+          }
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 2048
+        }
       })
     });
 
@@ -44,6 +63,8 @@ export const generateJobListings = async (prompt: string): Promise<GeminiJobList
     }
 
     const data = await response.json();
+    console.log('Gemini API Response:', data);
+    
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
     if (!text) {
@@ -57,6 +78,12 @@ export const generateJobListings = async (prompt: string): Promise<GeminiJobList
     }
 
     const jobListings = JSON.parse(jsonMatch[0]);
+    
+    // Log the grounding metadata if available
+    if (data.candidates?.[0]?.groundingMetadata) {
+      console.log('Grounding sources:', data.candidates[0].groundingMetadata);
+    }
+    
     return jobListings;
   } catch (error) {
     console.error('Error generating job listings:', error);
