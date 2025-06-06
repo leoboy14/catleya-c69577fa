@@ -1,4 +1,3 @@
-
 import { JobForm } from './JobForm';
 import { JobListing } from '@/types/job';
 
@@ -11,7 +10,7 @@ export const Header = ({ onAddJob, jobCount }: HeaderProps) => {
   return (
     <header className="border-b bg-green-50 backdrop-blur-sm sticky top-0 z-10">
       <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between h-36">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-green-800">Catleya</h1>
             <p className="text-green-600 mt-1">
@@ -22,8 +21,11 @@ export const Header = ({ onAddJob, jobCount }: HeaderProps) => {
                 </span>
               )}
             </p>
+            <div className="mt-4">
+              <JobForm onSubmit={onAddJob} />
+            </div>
           </div>
-          <JobForm onSubmit={onAddJob} />
+          <img src="/smile.png" alt="Smiling person" className="h-full w-auto max-h-32 object-contain" />
         </div>
       </div>
     </header>
