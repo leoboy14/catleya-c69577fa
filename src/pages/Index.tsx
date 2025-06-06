@@ -1,9 +1,7 @@
-
 import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { JobCard } from '@/components/JobCard';
 import { JobForm } from '@/components/JobForm';
-import { AiJobSidebar } from '@/components/AiJobSidebar';
 import { useJobListings } from '@/hooks/useJobListings';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus, BookOpen } from 'lucide-react';
@@ -58,8 +56,6 @@ const Index = () => {
           )}
         </main>
       </div>
-      
-      <AiJobSidebar onAddJob={addJobListing} />
     </div>
   );
 };

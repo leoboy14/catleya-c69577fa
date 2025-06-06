@@ -1,4 +1,3 @@
-
 interface GeminiJobListing {
   title: string;
   company: string;
@@ -43,11 +42,6 @@ export const generateJobListings = async (prompt: string): Promise<GeminiJobList
             - Include relevant location information (Remote, City/State, Hybrid)
             - Add brief but informative notes about each role`
           }]
-        }],
-        tools: [{
-          googleSearchRetrieval: {
-            disableAttribution: false
-          }
         }],
         generationConfig: {
           temperature: 0.7,
